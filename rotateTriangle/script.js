@@ -3,9 +3,11 @@
 
  // um atributo 'in' é um input para um vertex shader
  // recebera dados de um buffer
- 
+
  in vec2 a_position;
  
+ uniform vec2 center;
+
  in vec4 color;
 
  uniform vec2 u_rotation;
@@ -20,11 +22,15 @@
  // todo shader contem uma função main
  void main() {
     
-    vColor = color;
+    vColor = color; 
 
-    vec2 rotatedPosition = vec2(
+    /*vec2 rotatedPosition = vec2(
         a_position.x * u_rotation.y + a_position.y * u_rotation.x,
-        a_position.y * u_rotation.y - a_position.x * u_rotation.x);
+        a_position.y * u_rotation.y - a_position.x * u_rotation.x);*/
+    
+    vec2 rotatedPosition = vec2(
+        ((a_position.x - center.x) * u_rotation.y) - ((a_position.y - center.y) * u_rotation.x) + center.x,
+        ((a_position.x - center.x) * u_rotation.x) + ((a_position.y - center.y) * u_rotation.y) + center.y);
     
     vec2 position = rotatedPosition + u_translation;
 
@@ -61,6 +67,8 @@
     Math.random() * 255, Math.random() * 255, Math.random() * 255, 255,
 ]);
 
+var center = [0, 0];
+
 function main(){
     // configurar o canvas e o webgl
     var canvas = document.querySelector("canvas");
@@ -74,11 +82,14 @@ function main(){
      
     // procura no shader onde os dados precisam ir
     var positionAttributeLocation = gl.getAttribLocation(program, "a_position");
+    var centerXLocation = gl.getUniformLocation(program, "center");
     var resolutionUniformLocation = gl.getUniformLocation(program, "u_resolution");
     var colorLocation = gl.getAttribLocation(program, "color");
     var translationLocation = gl.getUniformLocation(program, "u_translation");
     var rotationLocation = gl.getUniformLocation(program, "u_rotation");
-     
+    
+    
+
     // criar o buffer
     var positionBuffer = gl.createBuffer();
      
@@ -110,6 +121,11 @@ function main(){
     gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
     gl.enableVertexAttribArray(colorLocation);
     gl.vertexAttribPointer(colorLocation, 4, gl.UNSIGNED_BYTE, true, 0, 0);
+    
+    var centerBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, centerBuffer);
+    gl.enableVertexAttribArray(centerXLocation);
+    gl.vertexAttribPointer(centerXLocation, 2, gl.FLOAT, false, 0, 0);
 
     // criação de variaveis para translação, e dimenções do triangulo
     var translation = [0, 0];
@@ -121,18 +137,19 @@ function main(){
     drawScene();
      
     // configurar interface para receber dados do slide
-    webglLessonsUI.setupSlider("#x", {slide: updatePosition(0), max: gl.canvas.width});
-    webglLessonsUI.setupSlider("#y", {slide: updatePosition(1), max: gl.canvas.height});
+    webglLessonsUI.setupSlider("#x", {slide: updatePosition(0), max: 165});
+    webglLessonsUI.setupSlider("#y", {slide: updatePosition(1), max: 165});
     webglLessonsUI.setupSlider("#rotate", {slide: updateAngle, max: 360});
      
     function updatePosition(index){
+        //center[index] += translation[index];
         return function(event, ui){
             translation[index] = ui.value;
             drawScene();
         };
     }
 
-    function updateAngle(index, ui){
+    function updateAngle(event, ui){
         var degrees = 360 - ui.value;
         var radians = degrees * Math.PI / 180;
         rotation[0] = Math.sin(radians);
@@ -141,6 +158,7 @@ function main(){
     }
      
     function drawScene(){
+        console.log(center);
         webglUtils.resizeCanvasToDisplaySize(gl.canvas);
      
         // diga como converter o clipspace para pixels
@@ -164,10 +182,13 @@ function main(){
 
         // Set the rotation.
         gl.uniform2fv(rotationLocation, rotation);
-     
+        
+        gl.uniform2fv(centerXLocation, center);
         // atualize o position buffer com as posições do retangulo
         gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+        gl.bindBuffer(gl.ARRAY_BUFFER, centerBuffer);
         setTriangle(gl, translation[0], translation[1], width, height);
+        
         
 
         // configure uma cor aleatoria
@@ -195,7 +216,15 @@ function setTriangle(gl, x, y, widht, height){
         x1, y2,
         x2, y2,
     ]), gl.STATIC_DRAW);
+
+    center[0] = (x1 + x2 + x3)/3;
+    center[1] = (y1 + y2 + y2)/3;
+
+    console.log(x1, x2, x3);
+    console.log(y1, y2, y2);
+
 }
+
 
 main();
  
