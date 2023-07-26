@@ -1,14 +1,11 @@
  // criar o vertex shader
  var vertexShaderSource = `#version 300 es
 
-// um atributo 'in' é um input para um vertex shader
-// recebera dados de um buffer
-
 in vec2 a_position;
  
-uniform vec2 center;
-
 in vec4 color;
+
+uniform vec2 center;
 
 uniform vec2 u_scale;
 
@@ -18,10 +15,8 @@ uniform vec2 u_translation;
 
 out vec4 vColor;
 
-// passa a resolução do canvas
 uniform vec2 u_resolution;
  
-// todo shader contem uma função main
 void main() {
     
     vColor = color; 
@@ -172,7 +167,6 @@ function main(){
     }
      
     function drawScene(){
-        console.log(center);
         webglUtils.resizeCanvasToDisplaySize(gl.canvas);
      
         // diga como converter o clipspace para pixels
@@ -235,12 +229,7 @@ function setTriangle(gl, x, y, widht, height){
 
     center[0] = (x1 + x2 + x3)/3;
     center[1] = (y1 + y2 + y2)/3;
-
-    console.log(x1, x2, x3);
-    console.log(y1, y2, y2);
-
 }
-
 
 main();
  
