@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://webgl2fundamentals.org/webgl/resources/webgl-utils.js"></script>
+    <script src="https://webgl2fundamentals.org/webgl/resources/webgl-lessons-ui.js"></script>
+    <script src="script.js" type="module"></script>
+    <title>Rainbow Triangle</title>
+</head>
+<body>
+    <div class="description">
+        Drag sliders to translate.
+        </div>
+        <canvas id="canvas" width="600" height="500"></canvas>
+        <div id="uiContainer">
+          <div id="ui">
+            <div id="x">
+              <div class="gman-widget-outer">
+                <div class="gman-widget-label">x</div>
+                <div class="gman-widget-value">0</div>
+                <input class="gman-widget-slider" type="range" min="0" max="398" value="0">
+              </div>
+            </div>
+            <div id="y">
+              <div class="gman-widget-outer">
+                <div class="gman-widget-label">y</div>
+                <div class="gman-widget-value">0</div>
+                <input class="gman-widget-slider" type="range" min="0" max="298" value="0">
+              </div>
+            </div>
+            <div id="rotate">
+                <div class="gman-widget-outer">
+                  <div class="gman-widget-label">rotate</div>
+                  <div class="gman-widget-value">0</div>
+                  <input class="gman-widget-slider" type="range" min="0" max="360" value="0">
+                </div>
+              </div>
+              <div id="scaleX">
+                <div class="gman-widget-outer">
+                  <div class="gman-widget-label">Scale x</div>
+                  <div class="gman-widget-value">0</div>
+                  <input class="gman-widget-slider" type="range" min="0" max="360" value="0">
+                </div>
+              </div>
+              <div id="scaleY">
+                <div class="gman-widget-outer">
+                  <div class="gman-widget-label">Scale y</div>
+                  <div class="gman-widget-value">0</div>
+                  <input class="gman-widget-slider" type="range" min="0" max="360" value="0">
+                </div>
+              </div>
+          </div>
+        </div>
+</body>
+</html>
