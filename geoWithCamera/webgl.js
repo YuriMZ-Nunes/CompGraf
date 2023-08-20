@@ -449,9 +449,9 @@ async function main(fourPoints) {
     };
   });
 
-  var cameraCurve = 1;
+  
 
-  var animation = 0;
+  var cameraCurve = 1;
 
   webglLessonsUI.setupSlider("#cameraCurve", {value: 0, slide: updateCameraCurve, min: 0.0, max: 1.0, step:0.01});
 
@@ -460,12 +460,6 @@ async function main(fourPoints) {
     cameraCurve = 1 - cameraCurve;
     render();
   }
-
-  function animationButton(){
-    alert("teste");
-  }
-
- 
 
   function getExtents(positions) {
     const min = positions.slice(0, 3);
@@ -500,9 +494,9 @@ async function main(fourPoints) {
       m4.addVectors(
         extents.min,
         m4.scaleVector(range, 0.5)),
-      -1);
-  
-
+  -1);
+    
+      
   function bezierX(fourPoints, t){
     var pAx = fourPoints[0];
     var pBx = fourPoints[2];
