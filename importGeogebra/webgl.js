@@ -1,5 +1,9 @@
 "use strict";
 
+
+import {fourPoints} from "./script.js";
+
+
 // This is not a full .obj parser.
 // see http://paulbourke.net/dataformats/obj/
 
@@ -218,13 +222,21 @@ function parseMTL(text) {
   return materials;
 }
 
+bezier = function(p0, p1, p2, p3){
+  
+}
+
 async function main() {
 
-    const canvas = document.getElementById("canvas");
-    const gl = canvas.getContext("webgl2");
+  const canvas = document.getElementById("canvas");
+  const gl = canvas.getContext("webgl2");
   if (!gl) {
     return;
   }
+
+  var cPoints = new Array();
+
+
 
   // Tell the twgl to match position with a_position etc..
   twgl.setAttributePrefix("a_");
