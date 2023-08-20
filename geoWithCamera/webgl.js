@@ -288,7 +288,7 @@ function parseMTL(text) {
 
 
 
-async function main(fourPoints, animationCheck) {
+async function main(fourPoints) {
 
   const canvas = document.getElementById("canvas");
   const gl = canvas.getContext("webgl2");
@@ -296,13 +296,6 @@ async function main(fourPoints, animationCheck) {
     return;
   }
 
-  if(animationCheck == false){
-    alert("false");
-  }
-
-  if(animationCheck == true){
-    alert("true");
-  }
   // Tell the twgl to match position with a_position etc..
   twgl.setAttributePrefix("a_");
 
