@@ -1,3 +1,5 @@
+// ----------------- CARREGA O GEOGEBRA  ----------------- \\
+
 var ggbApplet = document.querySelector("#ggbApplet");
 
 function gbbOnInit(param){
@@ -21,9 +23,9 @@ var parameters = {
   "ggbBase64":"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",
 };
 
-let fourPoints = new Array();
+var fourPoints = new Array();
 
-parameters.appletOnLoad = function(api){
+parameters.appletOnLoad = function teste(api){
   fourPoints[0] = ggbApplet.getXcoord("A");
   fourPoints[1] = ggbApplet.getYcoord("A");
 
@@ -36,12 +38,12 @@ parameters.appletOnLoad = function(api){
   fourPoints[6] = ggbApplet.getXcoord("D");
   fourPoints[7] = ggbApplet.getYcoord("D");
 
-  main(fourPoints);
-
   function updateListener(objName){
     strVal = api.getValueString(objName);
+
     if(objName == "A"){
       fourPoints[0] = ggbApplet.getXcoord("A");
+      console.log(fourPoints[0]);
       fourPoints[1] = ggbApplet.getXcoord("A");
     }else if(objName == "B"){
       fourPoints[2] = ggbApplet.getXcoord("B");
@@ -53,9 +55,14 @@ parameters.appletOnLoad = function(api){
       fourPoints[6] = ggbApplet.getXcoord("D");
       fourPoints[7] = ggbApplet.getXcoord("D");
     }
+    //main(fourPoints);
   }
+  
+  api.registerUpdateListener(updateListener);
+  console.log(fourPoints);
 
-  fourPoints = api.registerUpdateListener(updateListener);
+  main(fourPoints);
+
 }
 
 var views = {'is3D': 0,'AV': 1,'SV': 0,'CV': 0,'EV2': 0,'CP': 0,'PC': 0,'DA': 0,'FI': 0,'macro': 0};
@@ -63,7 +70,16 @@ var applet = new GGBApplet(parameters, '5.0', views);
 window.onload = function() {applet.inject(ggbApplet)};
 applet.setPreviewImage('data:image/gif;base64,R0lGODlhAQABAAAAADs=','https://www.geogebra.org/images/GeoGebra_loading.png','https://www.geogebra.org/images/applet_play.png');
 
+// ----------------- CARREGA O GEOGEBRA  ----------------- \\
+
+// -------------------------------------------------------- \\
+
+// ----------------- INICIO WEBGL  ----------------- \\
+
+
 "use strict";
+
+//        FUNÇÕES PARA CARREGAR O OBJ
 
 function parseOBJ(text) {
   // because indices are base 1 let's just fill in the 0th data
@@ -280,13 +296,7 @@ function parseMTL(text) {
   return materials;
 }
 
-/* function startAnimation(){
-  console.log(fourPoints);
-  console.log("diwejdijweo");
-  main(fourPoints, true);
-} */
-
-
+//        FUNÇÃO MAIN PARA CARREGAR OS SHADERS
 
 async function main(fourPoints) {
 
@@ -295,6 +305,8 @@ async function main(fourPoints) {
   if (!gl) {
     return;
   }
+
+   
 
   // Tell the twgl to match position with a_position etc..
   twgl.setAttributePrefix("a_");
@@ -370,6 +382,8 @@ async function main(fourPoints) {
 
   // compiles and links the shaders, looks up attribute and uniform locations
   const meshProgramInfo = twgl.createProgramInfo(gl, [vs, fs]);
+
+  // CARREGANDO O OBJ
 
   const objHref = 'fullBasket.obj';  
   const response = await fetch(objHref);
@@ -450,16 +464,7 @@ async function main(fourPoints) {
   });
 
   
-
-  var cameraCurve = 1;
-
-  webglLessonsUI.setupSlider("#cameraCurve", {value: 0, slide: updateCameraCurve, min: 0.0, max: 1.0, step:0.01});
-
-  function updateCameraCurve(event, ui){
-    cameraCurve = ui.value;
-    cameraCurve = 1 - cameraCurve;
-    render();
-  }
+  
 
   function getExtents(positions) {
     const min = positions.slice(0, 3);
@@ -495,8 +500,18 @@ async function main(fourPoints) {
         extents.min,
         m4.scaleVector(range, 0.5)),
   -1);
+
+  // CRIANDO SLIDER
+  var cameraCurve = 1;
+  webglLessonsUI.setupSlider("#cameraCurve", {value: 0, slide: updateCameraCurve, min: 0.0, max: 1.0, step:0.01});
+
+  function updateCameraCurve(event, ui){
+    cameraCurve = ui.value;
+    cameraCurve = 1 - cameraCurve;
+    render();
+  }
     
-      
+  // FUNÇÕES PARA CALCULO DA CURVA E DA TANGENTE
   function bezierX(fourPoints, t){
     var pAx = fourPoints[0];
     var pBx = fourPoints[2];
@@ -528,6 +543,36 @@ async function main(fourPoints) {
 
     return bezierY;
   }
+
+  function calcTangent(fourPoints, t){
+    let P0 = new Array();
+    let P1 = new Array();
+    let P2 = new Array();
+    let P3 = new Array();
+    P0[0] = fourPoints[0];
+    P0[1] = fourPoints[1];
+
+    P1[0] = fourPoints[2];
+    P1[1] = fourPoints[3];
+
+    P2[0] = fourPoints[4];
+    P2[1] = fourPoints[5];
+
+    P3[0] = fourPoints[6];
+    P3[1] = fourPoints[7];
+    
+    var tangentVector = [
+      -3 * Math.pow((1 - t), 2) * P0[0] + 3 * Math.pow((1 - t), 2) * P1[0] - 6 * (1 - t) * t * P1[0] + 6 * (1 - t) * t * P2[0] + 3 * Math.pow(t, 2) * P2[0] - 3 * Math.pow(t, 2) * P3[0],
+      -3 * Math.pow((1 - t), 2) * P0[1] + 3 * Math.pow((1 - t), 2) * P1[1] - 6 * (1 - t) * t * P1[1] + 6 * (1 - t) * t * P2[1] + 3 * Math.pow(t, 2) * P2[1] - 3 * Math.pow(t, 2) * P3[1],
+  ];
+
+  tangentVector[0] = tangentVector[0] * -1;
+  tangentVector[1] = tangentVector[1] * -1;
+
+  return tangentVector;
+
+  }
+
   const radius = m4.length(range);
   
   // Set zNear and zFar to something hopefully appropriate
@@ -539,6 +584,7 @@ async function main(fourPoints) {
     return deg * Math.PI / 180;
   }
 
+  // RENDERIZAR 
   function render(time) {
     time *= 0.001;  // convert to seconds
 
@@ -552,7 +598,10 @@ async function main(fourPoints) {
 
     const up = [0, 1, 0];
     // Compute the camera's matrix using look at.
-    const cameraTarget = [0, 0, 0];
+
+    let tangent = calcTangent(fourPoints, cameraCurve);
+    let cameraTarget = [tangent[0], 0, tangent[1]];
+    //const cameraTarget = [0, 0, 0];
     // figure out how far away to move the camera so we can likely
     // see the object.
     
@@ -560,9 +609,9 @@ async function main(fourPoints) {
     let calcBezierZ = bezierY(fourPoints, cameraCurve);
 
     const cameraPosition = m4.addVectors(cameraTarget, [
-      15 * calcBezierZ,
+      radius * calcBezierZ,
       0,
-      radius * calcBezierX,
+      40 * calcBezierX,
     ]);
     const camera = m4.lookAt(cameraPosition, cameraTarget, up);
 
