@@ -138,11 +138,9 @@ async function main(fourPoints) {
   
     `;
 
-  // compile shader, link, look up locations
   const programInfo = twgl.createProgramInfo(gl, [vs, fs]);
 
-  // make some vertex data
-  // calls gl.createBuffer, gl.bindBuffer, gl.bufferData for each array
+  // ATRIBUTOS DO PLANO
   const bufferInfo = twgl.primitives.createPlaneBufferInfo(
     gl,
     96, // width
@@ -151,14 +149,16 @@ async function main(fourPoints) {
     64 // quads down
   );
 
+  // ATRIBUTOS DO CUBO
   const cubeGeometry = twgl.primitives.createCubeBufferInfo(gl, 2);
+  let cubeRender = true;
 
-  const sphereRadius = 1; // Set the radius of the sphere
-  const numSlices = 32; // Number of horizontal slices
-  const numStacks = 16; // Number of vertical stacks
+  // ATRIBUTOS DA ESFERA
+  const sphereRadius = 1;
+  const numSlices = 32;
+  const numStacks = 16;
 
   let sphereIndex = -1;
-  let cubeRender = true;
 
   const sphereGeometry = twgl.primitives.createSphereVertices(
     sphereRadius,
@@ -168,48 +168,40 @@ async function main(fourPoints) {
 
   const sphereBufferInfo = twgl.createBufferInfoFromArrays(gl, sphereGeometry);
 
-  const sphere = {
-    position: [0, 0, 0], // Initial position (same as the camera)
-    radius: 1, // Sphere radius
-    color: "red", // Sphere color (you can use other color representations)
-    speed: 0.5, // Speed of the sphere
-    direction: [0, 0, 0], // Direction in which the sphere moves
-    moving: false, // Flag to check if the sphere is in motion
-  };
-
   let spheres = [0];
 
+  // ATRIBUTOS DA CAMERA
   const fov = (60 * Math.PI) / 180;
   const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
   const near = 0.1;
-  const far = 200;
+  const far = 66;
   const projection = m4.perspective(fov, aspect, near, far);
   let view;
   let camera;
   let target = [];
   let eye;
 
+  // CARREGAR IMAGENS
   const img = await loadImage("teste.png");
   const imgMapColor = await loadImage("map.png");
   const imgSphere = await loadImage("moon.jpg");
   const imgCube = await loadImage("target.jpg");
 
-  // get image data
+  // CRIACAO DO PLANO COM AS ALTURAS
   const ctx = document.createElement("canvas").getContext("2d");
   ctx.canvas.width = 1600;
   ctx.canvas.height = 1600;
   ctx.drawImage(img, 0, 0);
   const imgData = ctx.getImageData(0, 0, img.width, img.height);
 
-  // generate normals from height data
   const displacementScale = 10;
   const data = new Uint8Array(imgData.data.length);
   for (let z = 0; z < imgData.height; ++z) {
     for (let x = 0; x < imgData.width; ++x) {
       const off = (z * img.width + x) * 4;
       const h0 = imgData.data[off];
-      const h1 = imgData.data[off + 4] || 0; // being lazy at edge
-      const h2 = imgData.data[off + imgData.width * 4] || 0; // being lazy at edge
+      const h1 = imgData.data[off + 4] || 0;
+      const h2 = imgData.data[off + imgData.width * 4] || 0;
       const p0 = [x, (h0 * displacementScale) / 255, z];
       const p1 = [x + 1, (h1 * displacementScale) / 255, z];
       const p2 = [x, (h2 * displacementScale) / 255, z + 1];
@@ -223,6 +215,7 @@ async function main(fourPoints) {
     }
   }
 
+  // CARREGAR TEXTURAS
   const tex = twgl.createTexture(gl, {
     src: data,
     width: imgData.width,
@@ -248,6 +241,7 @@ async function main(fourPoints) {
     wrap: gl.CLAMP_TO_EDGE,
   });
 
+  // SLIDE DA CAMERA
   var cameraCurve = 1;
   webglLessonsUI.setupSlider("#cameraCurve", {
     value: 0,
@@ -333,6 +327,7 @@ async function main(fourPoints) {
     return tangentVector;
   }
 
+  // CHAMA A FUNCAO PARA LANCAR ESFERA
   document.querySelector("canvas").addEventListener("click", throwSphere);
 
   function render(time) {
@@ -342,6 +337,7 @@ async function main(fourPoints) {
     gl.enable(gl.DEPTH_TEST);
     gl.enable(gl.CULL_FACE);
 
+    // CALCULO DE POSICOES DA CURVA
     let tangent = calcTangent(fourPoints, cameraCurve);
     let calcBezierX = bezierX(fourPoints, cameraCurve);
     let calcBezierZ = bezierY(fourPoints, cameraCurve);
@@ -353,12 +349,11 @@ async function main(fourPoints) {
     view = m4.inverse(camera);
     const model = m4.identity();
 
+    // RENDERIZAR PLANO
     gl.useProgram(programInfo.program);
 
-    // calls gl.bindBuffer, gl.enableVertexAttribArray, gl.vertexAttribPointer
     twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
 
-    // calls gl.activeTexture, gl.bindTexture, gl.uniformXXX
     twgl.setUniformsAndBindTextures(programInfo, {
       projection,
       view,
@@ -367,9 +362,9 @@ async function main(fourPoints) {
       colorTexture: texColor,
     });
 
-    // calls gl.drawArrays or gl.drawElements
     twgl.drawBufferInfo(gl, bufferInfo);
 
+    // RENDERIZAR CUBO
     var zPos = -30;
     timeCube = time;
     timeCube *= 0.002;
@@ -390,16 +385,15 @@ async function main(fourPoints) {
 
     if (cubeRender) twgl.drawBufferInfo(gl, cubeGeometry);
 
+    // RENDERIZAR ESFERAS
     for (let i = 0; i < spheres.length; i++) {
       const sphere = spheres[i];
 
       if (sphere.moving) {
-        // Move the sphere along its direction
         sphere.position[0] += sphere.direction[0] * sphere.speed;
         sphere.position[1] += sphere.direction[1] * sphere.speed;
         sphere.position[2] += sphere.direction[2] * sphere.speed;
 
-        // Render the sphere
         gl.useProgram(programInfo.program);
         const modelTransformSphere = m4.identity();
         m4.translate(
@@ -417,39 +411,20 @@ async function main(fourPoints) {
           colorTexture: moonColor,
         });
 
-        if (sphereIndex != i) twgl.drawBufferInfo(gl, sphereBufferInfo);
-
-        const distanceToCamera = v3.distance(sphere.position, eye); // Calculate distance to camera
-        const sphereRadius = 1;
-
-        // Check if the sphere is out of view (e.g., beyond the camera's far clipping plane)
-        if (distanceToCamera > far) {
-          sphere.moving = false; // Stop rendering this sphere
-        }
-
-        // Check if the sphere has reached its destination (you can set a destination point)
-        const destination = [
-          /* Set the destination point coordinates here */
-        ];
-        const distanceToDestination = v3.distance(sphere.position, destination);
-
-        if (distanceToDestination < sphereRadius * 0.5) {
-          // Adjust the threshold value as needed
-          sphere.moving = false; // Stop rendering this sphere
-        }
-
-        // Check if the sphere is out of bounds (you can define your own bounds)
-        if (sphere.position[2] < -10) {
-          sphere.moving = false; // Stop the sphere when it goes out of bounds
-        }
-
-        if (collisionCheck(spheres[i], cubePosition)) {
+        if (collisionCheck(sphere, cubePosition)) {
           sphereIndex = i;
           cubeRender = false;
+        } else {
+          if (sphereIndex != i) twgl.drawBufferInfo(gl, sphereBufferInfo);
+
+          const distanceToCamera = v3.distance(sphere.position, eye);
+
+          if (distanceToCamera > far) {
+            sphere.moving = false;
+          }
         }
       }
     }
-
     requestAnimationFrame(render);
   }
 
@@ -465,49 +440,24 @@ async function main(fourPoints) {
     });
   }
 
-  function throwSphere(event) {
-    const canvas = document.querySelector("canvas");
-    const canvasRect = canvas.getBoundingClientRect();
-    const mouseX = event.clientX - canvasRect.left;
-    const mouseY = event.clientY - canvasRect.top;
-
-    // Convert the mouse coordinates to NDC (Normalized Device Coordinates)
-    const mouseNDCX = (mouseX / canvas.width) * 2 - 1;
-    const mouseNDCY = 1 - (mouseY / canvas.height) * 2;
-
-    // Create a point in clip space using the NDC mouse coordinates
-    const mouseClipSpace = [mouseNDCX, mouseNDCY, -1, 1];
-
-    // Create an inverse matrix of the camera matrix
-    const cameraMatrixInverse = m4.inverse(camera);
-
-    // Transform the clip space mouse position to world space
-    const mouseWorldSpace = m4.transformPoint(
-      cameraMatrixInverse,
-      mouseClipSpace
-    );
-
+  function throwSphere() {
     const sphere = {
-      position: [30, 0, 7], // Initial position (same as the camera)
-      radius: 1, // Sphere radius
-      color: "red", // Sphere color (you can use other color representations)
-      speed: 0.5, // Speed of the sphere
-      direction: [0, 0, 0], // Direction in which the sphere moves
-      moving: false, // Flag to check if the sphere is in motion
+      position: [30, 0, 7],
+      radius: 1,
+      color: "red",
+      speed: 0.5,
+      direction: [0, 0, 0],
+      moving: false,
     };
 
     spheres.push(sphere);
 
-    target[0] = -mouseWorldSpace[0] * 1000;
+    target[0] = 0;
     target[1] = 0;
     target[2] = 0;
 
-    // Calculate the new direction vector
     sphere.direction = v3.normalize(v3.subtract(target, sphere.position));
 
-    // Add code to update the sphere's position and render it...
-
-    // For example, you can set a flag to indicate that the sphere should be moving
     sphere.moving = true;
   }
 
@@ -530,10 +480,8 @@ async function main(fourPoints) {
       Math.max(cubeMin[2], Math.min(sphere.position[2], cubeMax[2])),
     ];
 
-    // Calculate the distance between the sphere center and the closest point
     const distance = v3.distance(sphere.position, closestPoint);
 
-    // If the distance is less than or equal to the sphere's radius, there is a collision
     return distance <= sphereRadius;
   }
 }
