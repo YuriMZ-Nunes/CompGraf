@@ -1,3 +1,4 @@
+// CARREGAR GEOGEBRA
 var ggbApplet = document.querySelector("#ggbApplet");
 
 function gbbOnInit(param) {
@@ -76,6 +77,7 @@ applet.setPreviewImage(
   "https://www.geogebra.org/images/applet_play.png"
 );
 
+// INICIO DO WEBGL
 async function main(fourPoints) {
   const gl = document.querySelector("canvas").getContext("webgl2");
 
@@ -450,7 +452,7 @@ async function main(fourPoints) {
       moving: false,
     };
 
-    spheres.push(sphere);
+    if (spheres.length <= 5) spheres.push(sphere);
 
     target[0] = 0;
     target[1] = 0;
